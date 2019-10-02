@@ -2,7 +2,8 @@ import { HttpService, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
 import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
+import { FeedItem } from 'src/interfaces';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
@@ -13,8 +14,9 @@ export class AppService {
     this.url = JSON.parse(rawJson).apiUrl;
   }
 
-  getFeed(): Observable<AxiosResponse<{ items: object[] }>> {
-    return this.httpService.get(this.url);
+  getFeed(): Observable<FeedItem[]> {
+    return this.httpService.get(this.url)
+      .pipe(map(({ data }) => data.items));
   }
 
 }
