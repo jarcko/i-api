@@ -26,7 +26,7 @@
 
 ## Description
 
-UI project included.
+**UI project included.**
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
