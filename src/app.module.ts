@@ -1,7 +1,8 @@
-import { HttpModule, Module } from '@nestjs/common';
+import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CacheService } from 'src/cache.service';
+import { FrontendMiddleware } from 'src/frontend.middleware';
 
 @Module({
   imports: [
@@ -15,4 +16,15 @@ import { CacheService } from 'src/cache.service';
     CacheService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer
+      .apply(FrontendMiddleware)
+      .forRoutes(
+        {
+          path: '/**', // For all routes
+          method: RequestMethod.ALL, // For all methods
+        },
+      );
+  }
+}
